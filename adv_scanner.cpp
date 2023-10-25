@@ -29,7 +29,8 @@ namespace {
                     .batteryVoltage = batteryVoltage,
                     .batteryLevel = batteryLevel,
                     .mac = {address[0], address[1], address[2], address[3], address[4], address[5]},
-                    .rssi = rssi
+                    .rssi = rssi,
+                    .cnt = cnt
                 };
                 sCallback(data);
             }

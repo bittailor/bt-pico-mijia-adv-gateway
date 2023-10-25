@@ -13,6 +13,7 @@ struct SensorData {
     uint8_t batteryLevel;
     bd_addr_t mac;
     uint16_t rssi;
+    uint8_t cnt;
 };
 
 class BleAdvScanner {

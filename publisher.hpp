@@ -4,4 +4,6 @@
 void connect();
 void publishLoop();
 
+void publish(const char* topic, const char* message);
+
 #endif

@@ -23,6 +23,20 @@ int main()
         printf("MAC: %s\n", bd_addr_to_str(data.mac));
         printf("RSSI: %d\n", data.rssi);
         printf("\n");
+
+        char topic[256];
+        char message[256];
+
+        snprintf(topic, sizeof(topic) ,"bt/sensor/%s/readng", bd_addr_to_str(data.mac));
+        snprintf(message, sizeof(message) ,
+            R"JSON({"rssi":%d,"temperature":%.2f,"humidity":%.2f,"battery":%.3f,"batteryLevel":%d,"cnt":%d})JSON",
+                data.rssi,
+                data.temperature,
+                data.humidity,
+                data.batteryVoltage,
+                data.batteryLevel,
+                data.cnt);
+        publish(topic, message);
     }};
 
 

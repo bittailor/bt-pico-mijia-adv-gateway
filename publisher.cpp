@@ -1,9 +1,10 @@
 #include "publisher.hpp"
 
-#include <stdio.h>
+#include <cstdio>
+#include <atomic>
+
 #include <pico/stdlib.h>
 #include <pico/cyw43_arch.h>
-
 
 #include <lwip/dns.h>
 #include <lwip/apps/mqtt.h>
@@ -39,6 +40,14 @@ class MqttClient {
             mqtt_client_free(mClient);
         }
 
+        void publish(const char* topic, const char* data) {
+            if(mConnected) {
+                mqtt_publish(mClient, topic, data, strlen(data), 0, 0, [](void *arg, err_t err){
+                    printf("MQTT publish status %d\n", err);        
+                }, this);
+            }   
+        }
+
     private:
         
         void connect(const ip_addr_t& ipAddr) {
@@ -46,8 +55,10 @@ class MqttClient {
             int mqttConnectResult = mqtt_client_connect(mClient, &ipAddr, 1883, [](mqtt_client_t *client, void *arg, mqtt_connection_status_t status){
                 MqttClient* self = static_cast<MqttClient*>(arg);
                 printf("MQTT connection status %d\n", status); 
-                self->publish("bt/pico", "hello from gateway"); 
-
+                if(MQTT_CONNECT_ACCEPTED == status) {
+                    self->mConnected = true;
+                    self->publish("bt/pico", "hello from gateway");
+                }
             }, this, &mClientInfo);
             if (mqttConnectResult == 0) {
                 printf("Connected.\n");
@@ -55,18 +66,12 @@ class MqttClient {
                 printf("failed to connect error code = %d.\n", mqttConnectResult);
             }
         }
-
-        
-        void publish(const char* topic, const char* data) {
-            mqtt_publish(mClient, topic, data, strlen(data), 0, 0, [](void *arg, err_t err){
-                printf("MQTT publish status %d\n", err);        
-            }, this);
-        }
         
     private:
         mqtt_client_t* mClient;
         mqtt_connect_client_info_t mClientInfo;
         ip_addr_t mServerAddr;
+        std::atomic<bool> mConnected;
 };
 
 static MqttClient* sMqttClient;
@@ -121,5 +126,8 @@ void publishLoop() {
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
         sleep_ms(1000);
     }
+}
 
+void publish(const char* topic, const char* message) {
+    sMqttClient->publish(topic, message);
 }
