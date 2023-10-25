@@ -4,12 +4,12 @@
       "name": "Linux",
       "includePath": [
         "${workspaceFolder}/**",
-        "${env:PICO_SDK_PATH}/**"
+        "${env:HOME}/Code/PiPico/**"
       ],
       "defines": [],
       "compilerPath": "/opt/homebrew/bin/arm-none-eabi-gcc",
-      "cStandard": "gnu17",
-      "cppStandard": "gnu++14",
+      "cStandard": "gnu11",
+      "cppStandard": "gnu++17",
       "intelliSenseMode": "linux-gcc-arm",
       "configurationProvider" : "ms-vscode.cmake-tools"
     }
