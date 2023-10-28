@@ -1,4 +1,4 @@
-#include "adv_scanner.hpp"
+#include "BleAdvertisementScanner.hpp"
 
 #include <stdio.h>
 
@@ -7,11 +7,10 @@
 #include <btstack.h>
 #include <btstack_event.h>
 
-
 namespace {
     static constexpr uint16_t MIJIA_ADV_UUID = 0x181A;
 
-    BleAdvScanner *sInstance = nullptr;
+    BleAdvertisementScanner *sInstance = nullptr;
     std::function<void(const SensorData&)> sCallback;
     btstack_packet_callback_registration_t sHciEventCallbackRegistration;
 
@@ -86,7 +85,7 @@ namespace {
     }
 }
 
-BleAdvScanner::BleAdvScanner(std::function<void(const SensorData &)> callback)
+BleAdvertisementScanner::BleAdvertisementScanner(std::function<void(const SensorData &)> callback)
 {
     if(sInstance != nullptr) {
         printf("ERROR: BleAdvScanner already instantiated\n");
