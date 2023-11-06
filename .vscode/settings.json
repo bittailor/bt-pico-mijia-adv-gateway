@@ -68,6 +68,15 @@
       "sstream": "cpp",
       "stdexcept": "cpp",
       "streambuf": "cpp",
-      "typeinfo": "cpp"
+      "typeinfo": "cpp",
+      "cyw43_arch.h": "c",
+      "cyw43.h": "c",
+      "chrono": "cpp",
+      "condition_variable": "cpp",
+      "ratio": "cpp",
+      "mutex": "cpp",
+      "semaphore": "cpp",
+      "stop_token": "cpp",
+      "thread": "cpp"
     },
 }
